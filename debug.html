@@ -826,50 +826,7 @@ const websites = [
 `;
 
 console.log('%c╭──────────────────────────────────────────────╮\n| PurplesStrat\'s Sideloading Website            |\n| Website by PurplesStrat, pkplaysrblx and nxyq |\n╰──────────────────────────────────────────────╯', styleBox);
-</script>
-  
-<div id="enter-screen" style="position:fixed; inset:0; background:black; color:white; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999;">
-  <h1 style="font-size:2rem; margin-bottom:1rem;">Welcome to PurplesStrat iOS.</h1>
-  <button onclick="enterSite()" style="padding: 12px 24px; font-size: 18px; border: none; border-radius: 8px; background-color: white; color: black; cursor: pointer;">Enter</button>
-</div>
-
-<audio id="bg-music" loop></audio>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const playlist = [
-    "https://github.com/purplesstrat/music/raw/refs/heads/main/9yMqHq8PoBR67Kdy8di1RLRyurWYDJwHv4s9GZndlmzLYOJ1WwjSjpXkb8rKvtMbgg8cFaRdDEhfkZRXJwGi9wvDFHQjIkocxp2FIzzZs3H74LXxunAgydsoZ62HflDVz3bwSfbhTx0zJMtHoXp2SDtx5YPGPmLMNXxzaCGTRmhILmqBZRdBmsit0YU7t4K0p1BZXixUdFeidzGo-MontagemLunarDiamente.mp3",
-    "https://github.com/purplesstrat/music/raw/refs/heads/main/%5BRelease%20-%20Topic%5D%20Montagem%20Lunar%20Diamante%202.mp3",
-    "https://github.com/purplesstrat/music/raw/refs/heads/main/%5BRelease%20-%20Topic%5D%20Montagem%20Lunar%20Diamante%203.mp3"
-  ];
-
-  let currentTrack = Math.floor(Math.random() * playlist.length);
-  const audio = document.getElementById('bg-music');
-
-  function loadAndPlayTrack(index) {
-    audio.src = playlist[index];
-    audio.load();
-    audio.oncanplaythrough = () => {
-      audio.play().catch(err => {
-        console.warn(`Play failed for track ${index}:`, err);
-      });
-    };
-  }
-
-  audio.addEventListener('ended', () => {
-    currentTrack = (currentTrack + 1) % playlist.length;
-    loadAndPlayTrack(currentTrack);
-  });
-
-  window.enterSite = function () {
-    document.getElementById('enter-screen').style.display = 'none';
-    loadAndPlayTrack(currentTrack);
-  };
-});
-
-
-</script>
-
+            </script>
 
 </body>
 </html>
