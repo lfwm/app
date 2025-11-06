@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Download Application</title>
+<style>
+body { font-family: system-ui, -apple-system, Arial; text-align: center; padding: 3rem; }
+button { padding: .8rem 1.5rem; font-size: 1rem; border-radius: .5rem; cursor: pointer; }
+#status { display: block; margin-top: 1.2rem; font-weight: bold; color: green; }
+</style>
+</head>
+<body>
+<h1>Download Application</h1>
+<button id="download">Download Profile</button>
+<span id="status">✅ Working</span>
+
+<script>
+function uuidv4(){
+  return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){
+    var r=crypto.getRandomValues(new Uint8Array(1))[0]&15;
+    var v=c==='x'?r:(r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+function escapeXml(t){
+  return(t+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+}
+function buildConfig(url,label){
+  const u1=uuidv4(),u2=uuidv4();
+  return`<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>FullScreen</key><false/>
+      <key>Label</key><string>${escapeXml(label)}</string>
+      <key>PayloadIdentifier</key><string>com.purplesstrat.webclip.${u1}</string>
+      <key>PayloadType</key><string>com.apple.webClip.managed</string>
+      <key>PayloadUUID</key><string>${u2}</string>
+      <key>PayloadVersion</key><integer>1</integer>
+      <key>URL</key><string>${escapeXml(url)}</string>
+    </dict>
+  </array>
+  <key>PayloadDisplayName</key><string>${escapeXml(label)} Profile</string>
+  <key>PayloadIdentifier</key><string>com.purplesstrat.profile</string>
+  <key>PayloadType</key><string>Configuration</string>
+  <key>PayloadUUID</key><string>${u2}</string>
+  <key>PayloadVersion</key><integer>1</integer>
+</dict>
+</plist>`;
+}
+document.getElementById('download').addEventListener('click',()=>{
+  const blob=new Blob([buildConfig('https://github.com/purplesstrat.png','PurplesStrat Image')],{type:'application/x-apple-aspen-config'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='purplesstrat.mobileconfig';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+});
+</script>
+</body>
+</html>
