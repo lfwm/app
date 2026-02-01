@@ -1,911 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>PurplesStrat iOS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #000000;
-      --fg: #e0e0e0;
-      --accent: #FFFFFF;
-      --card-bg: #111111;
-      --border: #FFFFFF;
-    }
+<meta charset="UTF-8">
+<title>PurplesStrat iOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-  
-
-
-    header {
-      background: var(--card-bg);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: var(--accent);
-    }
-
-    nav.tabs {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tab-button {
-      padding: 0.75rem 1.5rem;
-      background: none;
-      border: none;
-      color: var(--fg);
-      font-weight: bold;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: border-color 0.3s;
-    }
-
-    .tab-button.active {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-.section-label {
-  margin: 20px 0;
-  padding: 10px 16px;
-  background: #111;
-  border-left: 5px solid #ff4dc4;
-  color: white;
-  border-radius: 8px;
+<style>
+:root {
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.18);
+  --accent: #ff4dc4;
+  --text: #f1f1f1;
 }
 
-.section-label h2 {
-  margin: 0 0 4px;
-  font-size: 20px;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--text);
+}
+
+/* GLASS */
+.glass {
+  backdrop-filter: blur(20px);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+/* HEADER */
+header {
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+}
+header h1 { margin: 0; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px;
+}
+
+.tab-button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #ff4dc4, #a855f7);
+  color: black;
+}
+
+/* CONTENT */
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* LABEL */
+.section-label {
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff4dc4, #a855f7);
+  color: black;
+}
+
+/* GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  backdrop-filter: blur(25px);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
+}
+
+.card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff4dc4, #a855f7);
+  color: black;
+  text-decoration: none;
   font-weight: bold;
 }
-
-.section-label p {
-  margin: 0;
-  font-size: 14px;
-  color: #ccc;
-}
-
-    main {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fade 0.3s ease-in-out;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      color: var(--accent);
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 0.5rem;
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .card img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      margin-bottom: 1rem;
-      border-radius: 20px;
-    }
-
-    .card h3 {
-      margin: 0.5rem 0;
-      font-size: 1.1rem;
-      color: var(--fg);
-    }
-
-    .card p {
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 0.8rem;
-      padding: 0.4rem 1rem;
-      background: var(--accent);
-      color: black;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-
-    @media (max-width: 480px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <header>
-  <h1>
-    <img src="https://purplesstrat.github.io/apple-1.png" alt=" Icon had gone missing :(" style="width:24px; height:24px; vertical-align:middle; margin-right:8px;">
+<header class="glass">
+ <img src="https://purplesstrat.github.io/apple-1.png" alt=" Icon had gone missing :(" style="width:24px; height:24px; vertical-align:middle; margin-right:8px;">
     PurplesStrat
-  </h1>
 </header>
 
+<nav class="tabs">
+  <button class="tab-button active" data-tab="apps">Apps</button>
+  <button class="tab-button" data-tab="news">News</button>
+  <button class="tab-button" data-tab="certificates">Certificates</button>
+  <button class="tab-button" data-tab="dns">DNS</button>
+  <button class="tab-button" data-tab="executors">Executors</button>
+  <button class="tab-button" data-tab="websites">Websites</button>
+  <button class="tab-button" data-tab="ipas">IPAs</button>
+  <button class="tab-button" data-tab="jailbreaks">Jailbreaks</button>
+  <button class="tab-button" data-tab="apple">Apple Apps</button>
+</nav>
 
+<main>
+  <section id="apps" class="tab-content active"><div class="card-grid" id="apps-section"></div></section>
+  <section id="news" class="tab-content"><div class="card-grid" id="news-section"></div></section>
+  <section id="certificates" class="tab-content"><div class="card-grid" id="certificates-section"></div></section>
+  <section id="dns" class="tab-content"><div class="card-grid" id="dns-section"></div></section>
+  <section id="executors" class="tab-content"><div class="card-grid" id="executors-section"></div></section>
+  <section id="websites" class="tab-content"><div class="card-grid" id="websites-section"></div></section>
+  <section id="ipas" class="tab-content"><div class="card-grid" id="ipas-section"></div></section>
+  <section id="jailbreaks" class="tab-content"><div class="card-grid" id="jailbreaks-section"></div></section>
+  <section id="apple" class="tab-content"><div class="card-grid" id="apple-section"></div></section>
+</main>
 
-  <nav class="tabs">
-    <button class="tab-button active" data-tab="apps">Apps</button>
-    <button class="tab-button active" data-tab="news">News</button>
-    <button class="tab-button" data-tab="certificates">Certificates</button>
-    <button class="tab-button" data-tab="dns">DNS</button>
-    <button class="tab-button" data-tab="executors">Executors</button>
-    <button class="tab-button" data-tab="website">Websites</button>
-    <button class="tab-button" data-tab="ipas">IPAs</button>
-    <button class="tab-button" data-tab="jailbreaks">Jailbreaks</button>
-    <button class="tab-button" data-tab="apple-apps">Apple Apps</button>
-  </nav>
-
-  <main>
-   
-    <section id="apps" class="tab-content active">
-      <h2>Apps</h2>
-      <div class="card-grid" id="apps-section"></div>
-    </section>
-
-    <section id="news" class="tab-content">
-      <h2>News</h2>
-      <div class="card-grid" id="news-section"></div>
-    </section>
-    
-    <section id="certificates" class="tab-content">
-      <h2>Certificates</h2>
-      <div class="card-grid" id="certificates-section"></div>
-    </section>
-
-    <section id="dns" class="tab-content">
-      <h2>DNS</h2>
-      <div class="card-grid" id="dns-section"></div>
-    </section>
-
-    <section id="executors" class="tab-content">
-      <h2>Executors</h2>
-      <div class="card-grid" id="executor-section"></div>
-    </section>
-
-    <section id="website" class="tab-content">
-      <h2>Websites</h2>
-      <div class="card-grid" id="website-section"></div>
-    </section>
-    
-    <section id="ipas" class="tab-content">
-      <h2>IPAs</h2>
-      <div class="card-grid" id="ipas-section"></div>
-    </section>
-
-      <section id="jailbreaks" class="tab-content">
-      <h2>Jailbreaks</h2>
-      <div class="card-grid" id="jailbreak-section"></div>
-    </section>
-
-    <section id="apple-apps" class="tab-content">
-      <h2>Apple Apps</h2>
-      <div class="card-grid" id="apple-section"></div>
-    </section>
-    
-  </main>
-
-  <script>
-const news = [
-       { label: true, title: "Update 3", contents: "Move Cydia to Jailbreak section." },
-       { label: true, title: "Update 2", contents: "Added Apple apps." },
-       { label: true, title: "Update 1", contents: "This section will contain the latest updates." },
-      
-    ]; 
-
-    
-    const apps = [
-      
-       { label: true, title: "Note", contents: "If apps have different icons that are different to the original, they are signed by me :)" },
-      {
-        name: 'ESign',
-        url: 'https://loadly.io/PGwC04B6',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'GLOBAL TAKEOFF INC'
-      },
-    {
-        name: 'ESign',
-        url: 'itms-services://?action=download-manifest&url=https://spaceb.in/SWAYEZxS/raw',
-        img: 'https://purplesstrat.github.io/app/7BAB0FDE-9CF4-447D-8E7F-4EB98B9E1CA5.png',
-        descriptions: 'Tianjin University of Commerce'
-      },
-       {
-        name: 'Feather',
-        url: 'itms-services://?action=download-manifest&url=https://skibiditech.co/13.plist',
-        img: 'https://purplesstrat.github.io/app/Feather.png',
-        descriptions: 'Guangzhou Huahan Educational & Technology Co.,Ltd.'
-      },
-            {
-        name: 'TrollStoreX',
-        url: 'itms-services://?action=download-manifest&url=https://skibiditech.co/11.plist',
-        img: 'https://raw.githubusercontent.com/alfiecg24/TrollInstallerX/main/Resources/Icon.png',
-        descriptions: 'Guangzhou Huahan Educational & Technology Co.,Ltd.'
-      },
-            {
-        name: 'GBox',
-        url: 'itms-services://?action=download-manifest&url=https://easyfiles.cc/2025/7/2d113aaf-7aed-4e9d-8e7a-f6e6e7a26c39/2c0f9df7fb37be7a0ff3b3bfd793507b.plist',
-        img: 'https://gbox.run/Public/resources/icon256.png',
-        descriptions: 'BMW Brilliance Automotive Ltd'
-      },
-      {
-        name: 'Scarlet',
-        url: 'itms-services://?action=download-manifest&url=https://skibiditech.co/12.plist',
-        img: 'https://usescarlet.com/icon.png',
-        descriptions: 'Guangzhou Huahan Educational & Technology Co.,Ltd.'
-      },
-          {
-        name: 'KSign New Update ✅',
-        url: 'https://api.khoindvn.io.vn/t8jJVv',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Commission on Elections'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/PKTWlR',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Wasu Media & Network Co'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/CGMj7s',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Luoyang Postal Administration'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/5PwyVy',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Etisalat - Emirates Telecommunications Corporation'   
-    },
-    {
-        name: 'KSign V2 ',
-        url: 'https://api.khoindvn.io.vn/7wr6sg',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China National Heavy Duty Truck Group Co., Ltd'   
-    },{
-        name: 'KSign ',
-        url: 'https://api.khoindvn.io.vn/D6q5cE',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China National Heavy Duty Truck Group Co., Ltd'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/uFdLFw',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Fujian Keguan Real Estate Brokerage Co'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/7FRSgi',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Jiajiayue Group Co.,Ltd'   
-    },{
-        name: 'KSign V2',
-        url: 'https://api.khoindvn.io.vn/Qih0uw',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TechTree IT Systems Private Limited'   
-    },{
-        name: 'KSign V1',
-        url: 'https://api.khoindvn.io.vn/PtRcts',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TechTree IT Systems Private Limited'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/B3LYHy',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TechTree IT Systems Private Limited'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/6rkpFX',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Guangzhou Huahan Educational & Technology Co.,Ltd.'   
-    },{
-        name: 'KSign V3 China',
-        url: 'https://api.khoindvn.io.vn/xBQ9Fm',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Telecommunications Corporation'   
-    },{
-        name: 'KSign V2 China',
-        url: 'https://api.khoindvn.io.vn/5PdaWQ',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Telecommunications Corporation'   
-    },{
-        name: 'KSign V1 China',
-        url: 'https://api.khoindvn.io.vn/QC273L',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Telecommunications Corporation'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/IV5Li2',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Telecommunications Corporation'   
-    },{
-        name: 'KSign GOBAL V7',
-        url: 'https://api.khoindvn.io.vn/TJPFQy',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V6',
-        url: 'https://api.khoindvn.io.vn/Q54jvO',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V5',
-        url: 'https://api.khoindvn.io.vn/syblHB',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V4',
-        url: 'https://api.khoindvn.io.vn/nzvN40',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V3',
-        url: 'https://api.khoindvn.io.vn/MrNRUB',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V2',
-        url: 'https://api.khoindvn.io.vn/Q9iqc5',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign GOBAL V1',
-        url: 'https://api.khoindvn.io.vn/hXpQPB',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },{
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/nG8BnC',
-        img: 'img/pf/ksign.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/lu4NBL',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Tianjin University of Commerce'   
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/qcLoLs',
-        img: 'img/pf/ksign.png',
-        descriptions: 'BMW Brilliance Automotive Ltd'   
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/TlVhNA',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'KSign VNJ V1',
-        url: 'https://api.khoindvn.io.vn/6FOa5r',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'KSign VNJ V2',
-        url: 'https://api.khoindvn.io.vn/VQbmUk',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'KSign VNJ V3',
-        url: 'https://api.khoindvn.io.vn/p351Hf',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'KSign VNJ V4',
-        url: 'https://api.khoindvn.io.vn/ds5PGC',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'KSign VIETTEL GROUP V2',
-        url: 'https://api.khoindvn.io.vn/PYWwmW',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETTEL GROUP'   
-    },
-    {
-        name: 'KSign VIETTEL GROUP V3',
-        url: 'https://api.khoindvn.io.vn/S8DdoN',
-        img: 'img/pf/ksign.png',
-        descriptions: 'VIETTEL GROUP'   
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/anm84U',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign Chiba V1',
-        url: 'https://api.khoindvn.io.vn/XzsCi7',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign Chiaba V2',
-        url: 'https://api.khoindvn.io.vn/N3XgAx',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign Chiaba V3',
-        url: 'https://api.khoindvn.io.vn/bd1gnr',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign Chiba V4',
-        url: 'https://api.khoindvn.io.vn/ujwwo6',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign Chiba V5',
-        url: 'https://api.khoindvn.io.vn/VNh003',
-        img: 'img/pf/ksign.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/tUjXxn',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TCL household Appliance Marketing Co'   
-    },
-    {
-        name: 'KSign TCL V1',
-        url: 'https://api.khoindvn.io.vn/SdYt5x',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TCL household Appliance Marketing Co'   
-    },
-    {
-        name: 'KSign TCL V2',
-        url: 'https://api.khoindvn.io.vn/ecofmF',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TCL household Appliance Marketing Co'   
-    },
-    {
-        name: 'KSign TCL V3',
-        url: 'https://api.khoindvn.io.vn/tYiYjA',
-        img: 'img/pf/ksign.png',
-        descriptions: 'TCL household Appliance Marketing Co'
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/kiEnst',
-        img: 'img/pf/ksign.png',
-        descriptions: 'EEO Education Ltd'
-    },
-    {
-        name: 'KSign EEO V1',
-        url: 'https://api.khoindvn.io.vn/xntFhV',
-        img: 'img/pf/ksign.png',
-        descriptions: 'EEO Education Ltd'
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/aSPW2W',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Railway Eryuan Engineering Group'
-    },
-    {
-        name: 'KSign China Railway V1',
-        url: 'https://api.khoindvn.io.vn/TsKid8',
-        img: 'img/pf/ksign.png',
-        descriptions: 'China Railway Eryuan Engineering Group'
-    },
-    {
-        name: 'KSign',
-        url: 'https://api.khoindvn.io.vn/ZkeLVS',
-        img: 'img/pf/ksign.png',
-        descriptions: 'Beijing Esensoft Co'
-    },
-         {
-        name: 'ESign New Update ✅',
-        url: 'https://api.khoindvn.io.vn/YcrdHk',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Commission on Elections'   
-    },{
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/kc3EGM',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Wasu Media & Network Co., Ltd'   
-    },{
-        name: 'ESign',
-        url: 'https://api.khoindvn.eu.org/k1Ycos',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Etisalat - Emirates Telecommunications Corporation'   
-    },
-     {
-        name: 'ESign ',
-        url: 'https://api.khoindvn.io.vn/jA06Dp',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'China National Heavy Duty Truck Group Co., Ltd.'   
-    },{
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/SUvkkC',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Guangzhou Huahan Educational & Technology Co.,Ltd'   
-    },{
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/qylEe1',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'China Telecommunications Corporation'   
-    },{
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/yHH6NE',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'GLOBAL TAKEOFF, INC'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/SXgmxb',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Tianjin University of Commerce'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/7SxrmH',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'VIETNAM JOINT STOCK COMMERCIAL BANK FOR INDUSTRY AND TRADE'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/KX3VBb',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'VIETTEL GROUP'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/u9v6lH',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'CHIBA INSTITUTE OF TECHNOLOGY'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/rR9jps',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Beijing Esensoft Co., Ltd'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/DoD29p',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'NREH ESTATE INFORMATION TECHNOLOGY CO.,LTD'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/OuUeFv',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'China Railway Eryuan Engineering Group Co., Ltd.'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/kKZQf7',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'EEO Education ltd'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/khDDZF',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'TCL household Appliance Marketing Co., LTD'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/qhVaFI',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'Wuling Power Corporation'   
-    },
-    {
-        name: 'ESign',
-        url: 'https://api.khoindvn.io.vn/1ZJIPP',
-        img: 'img/pf/profile-pic.png',
-        descriptions: 'HDFC Bank Limited'
-    }
-    ];
-    const certificates = [
-       {
-        name: 'Khoindvn',
-        url: 'https://github.com/esigncert/khoindvn/raw/refs/heads/main/document/DNS/Certs-Khoindvn.zip',
-        img: 'https://khoindvn.io.vn/img/pf/profile-pic.png',
-        descriptions: 'New Working Certs'
-      },
-      {
-        name: 'BMW Brilliance Automotive Ltd',
-        url: 'https://skibiditech.co/bmw.zip',
-        img: 'https://khoindvn.io.vn/img/pf/ksign.png',
-        descriptions: 'New Certificate'
-      }
-    ]; 
-    const dns = [
-          {
-        name: 'Khoindvn DNS',
-        url: 'https://khoindvn.io.vn/document/DNS/signed_khoindvn.mobileconfig',
-        img: 'https://khoindvn.io.vn/img/pf/ksign.png',
-        descriptions: 'Custom DNS Settings'
-      },
-      {
-        name: 'KhoinMod [OLD] DNS',
-        url: 'https://senumy.com/install/e-sign/dns.mobileconfig',
-        img: 'https://github.com/purplesstrat.png',
-        descriptions: 'Custom DNS Settings'
-      },
-      {
-        name: 'Skibidi DNS',
-        url: 'https://skibiditech.co/mobileconfig.php',
-        img: 'https://skibiditech.co/icon.jpg',
-        descriptions: 'Custom DNS Settings'
-      },  
-    ];
-    const otherApps = [
-           {
-        name: 'Codex',
-        url: 'itms-services://?action=download-manifest&amp;url=https%3A%2F%2Fcodex-ios.com%2FInstall.plist',
-        img: 'https://codex-ios.com/apple-touch-icon.png',
-        descriptions: 'New Certificate',
-      },
-      {
-        name: 'Delta',
-        url: 'itms-services://?action=download-manifest&url=https%3A%2F%2Fdeltaios-executor.com%2FInstall21.plist',
-        img: 'https://deltaios-executor.com/Icon.jpg',
-        descriptions: 'New Certificate',
-      },
-      {
-        name: 'KRNL',
-        url: 'itms-services://?action=download-manifest&url=https://krnl-ios.com/Install2.plist',
-        img: 'https://krnl-ios.com/unnamed.png',
-        descriptions: 'New Certificate',
-      },
-      
-      {
-        name: 'ArceusX Neo',
-        url: 'https://egirl.help/arceusx',
-        img: 'https://easyfiles.cc/2025/10/412f0194-5699-4156-8482-f98ce8f66454/arceusx.png',
-        descriptions: 'Raw File',
-      },
-      {
-        name: 'AppleWare',
-        url: 'https://egirl.help/appleware',
-        img: 'https://easyfiles.cc/2025/10/f649d610-c80f-4c52-9fa8-52ed63325656/appleware.png',
-        descriptions: 'Raw File',
-      }
-    ]; 
-
-const websites = [
-           {
-        name: 'Roblox Compiler',
-        url: 'https://purplesstrat.github.io/native-apps/compiler.html',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Roblox_Logo_2022.jpg',
-        descriptions: 'Roblox compiler for making scripts.',
-      },
-  {
-        name: 'ScriptBlox',
-        url: 'https://scriptblox.com',
-        img: 'https://scriptblox.com/favicon.ico',
-        descriptions: 'Script searcher for Roblox.',
-      },
-   {
-        name: 'NextDNS',
-        url: 'https://my.nextdns.io',
-        img: 'https://nextdns.io/static/og-image.jpg',
-        descriptions: 'iOS DNS Maker, which can be used to make anti revoke DNS!',
-      },
-    ]; 
-
-    const ipas = [
-           {
-        name: 'Discord (Revenge)',
-        url: 'https://download1648.mediafire.com/smrbdzokrqugf6sg2I70Y9ggCCXg_57RwrgWr0vdAoLPTSwrldD7i9zANAvLwG_KBhkNzeFVdNcbxQ08wd3zLk1ygNeeisFnsDjEMDOnNab-JQD-CLor8IAxrVkujdJjPXpUuGgzFPSH5ec4IttxSF19VOik-q1tt1gLB8mrHZOmfQ/cgs8oyq95416d2a/Revenge.ipa',
-        img: 'https://github.com/revenge-mod.png',
-        descriptions: 'Revenge Mod for Discord',
-      },
-  {
-        name: 'Discord (Bunny)',
-        url: 'https://download1648.mediafire.com/9i2xn9up8ehgnsP_rkAO7iro-336ANH2AjYPL_UgATKfTPrcppnFoN-ZkHaWU74wKtd5zl2L0h614ByxI1a91LCWYgqStN3aVUxCVPSzo7PiY7MNhqRiPSGKYR-OwfMNJanULwW6RxOw4kQ8Dj0PIgi9wptclTzXyFLjAI66hCJpbg/2t8bfrlykxk2vsy/Bunny.ipa',
-        img: 'https://github.com/bunny-mod.png',
-        descriptions: 'Bunny Mod for Discord',
-      },
-   {
-        name: 'Discord (Enmity)',
-        url: 'https://github.com/enmity-mod/tweak/releases/latest/download/Enmity.ipa',
-        img: 'https://github.com/enmity-mod.png',
-        descriptions: 'Enmity Mod for Discord',
-      },
-    ]; 
-    const jailbreaks = [
-
-      { label: true, title: "Jailbreaks", contents: "This section uses Jailbreaks.app API." },
-      { label: true, title: "Note", contents: "Cydia doesn't work by the way." },
-      {
-        name: 'Cydia+',
-        url: 'itms-services://?action=download-manifest&url=https://easyfiles.cc/2025/7/6127141a-6264-43ca-95b8-08653ad13dde/Cydia++.plist',
-        img: 'https://www.mobipicker.com/wp-content/uploads/2016/07/Cydia.png',
-        descriptions: 'BMW Brilliance Automotive Ltd'
-      },
-           {
-        name: 'Chimera',
-        url: 'https://api.jailbreaks.app/install/Chimera',
-        img: 'https://jailbreaks.app/cdn/images/Chimera.png',
-        descriptions: 'Chimera Jailbreak.',
-      },
-      {
-        name: 'Unc0ver',
-        url: 'https://api.jailbreaks.app/install/Unc0ver',
-        img: 'https://unc0ver.dev/Icon.png',
-        descriptions: 'Unc0ver Jailbreak.',
-      },
-    ]; 
-
-     const apple = [
-       
-                  {
-        name: 'Field Test',
-        url: 'https://www.icloud.com/shortcuts/25136abc5e1f44648a529012f431c425',
-        img: 'https://purplesstrat.github.io/app/IMG_0345.jpeg',
-        descriptions: 'Field Test App',
-      },
-           {
-        name: 'Face ID',
-        url: 'https://download1479.mediafire.com/31rki5szsk9gh78ODYhr4gV2qYFK2DfWC7ObfyV238j_HOvfyDkgFnX3GmazAufR76gjKyUDW5NSmci8EuQZ6l-BhQh_MclHLMJJcgL3TCekA1iwyROL8cIcYYDB40mtonBrYvEkyS0ZS04hdU-HUMiD2El2spMFW-W6cqltFvfEVA/yixwy3ti0fwj7hu/Face+ID_2.0.0_1754322687.ipa',
-        img: 'https://www.theiphonewiki.com/w/images/thumb/7/75/Face_ID_Icon.png/177px-Face_ID_Icon.png',
-        descriptions: 'Face ID App',
-      },
-  {
-        name: 'DemoLoop',
-        url: 'https://download1509.mediafire.com/wk0qnre4jkggUkg2_-G0P83mkNgH4eHAcN2gyrrYM0FkXKpeEKCD_eUIkXg9Vi6OsGNySGl2XqkUDPISv05F-_DiW7IihFd5zmJFaYd2TEYJLLF8_1s8hEdI3LqS2aJLsBE46vyMhrWn-ZTk3OVlcAMGmqIyeHSSHK_TlD8PADoOPw/itcgesnvz7yrv3x/DemoLoop_7.4_1754322656.ipa',
-        img: 'https://i.imgur.com/MMMcgNV.png',
-        descriptions: 'DemoLoop app.',
-      },
-   {
-        name: 'DemoLoop 2',
-        url: 'https://download1589.mediafire.com/etgac7b5z5tg_6vGu2YTkljTmhDYk72lq9uNYI79yUugFAxFCTGCV0wKuCN8VSntCmxefysxzNGMLZ-NpiTlwYy271HZ0Xv873rqju50fnrR7Narl95DqHtI0f9DX1UpotocamWAnXtlt3kY0xqnkb8PA8MOeQDRKvOd_h4na9VP-Q/kyt59mgt3a937nu/DemoLoop_1.3.0_1754322491Official.ipa',
-        img: 'https://i.imgur.com/MMMcgNV.png',
-        descriptions: 'DemoLoop second version if first one does not work.',
-      },
-       {
-        name: 'Meet iPhone',
-        url: 'https://download1339.mediafire.com/v71ouavhg4lgqvUkJLCntZV2RR5szAplUG0PYaHBiQEUrKhPJzUwqivNS65nsdIFAm9u5cCbV-jKyZjl01WgAJUiGTGST-QrbZg1ByNiyvfqfzpTyPah7CeNVdHNJiX3CcM0K3b2HTSZD6rBYIShEirVncS-uic_1EGE8Kck17ClXA/yda1etj72jup427/Meet+iPhone_4.4.0.8_1754322641.ipa',
-        img: 'https://i.imgur.com/Ge1SkCy.png',
-        descriptions: 'Meet iPhone app.',
-      },
-       {
-        name: 'Touch ID',
-        url: 'https://download1979.mediafire.com/4gbnvnfv38zgFSRpdRdOqrMxOKN_hEsXiXDHsWR6z_HFoKVWhx2U42o4gyiS4KKUaFBBoQFhmffCUA_9cGoRFGXBmpqXBHeZA2jmB4hqcBfxeSa6pCJwYeO79g2RC8mnAtW2Sq3KuMQdPV90E4PLeVGOowXLN501jdJb3QXwH1nFOQ/0y1ghp3mnhc617u/Touch+ID_3.2.0_1754322645.ipa',
-        img: 'https://i.imgur.com/gSI1mfY.png',
-        descriptions: 'Touch ID App',
-      },
-      
-    ]; 
-    
-    function renderSection(data, containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = '';
-  data.forEach(app => {
-    const div = document.createElement('div');
-
-    // Handle label entries
-    if (app.label) {
-      div.className = 'section-label';
-      div.innerHTML = `
-        <h2>${app.title}</h2>
-        <p>${app.contents}</p>
-      `;
-    } else {
-      div.className = 'card';
-      div.innerHTML = `
-        <img src="${app.img}" alt="${app.name}" />
-        <h3>${app.name}</h3>
-        <p>${app.descriptions}</p>
-        <a href="${app.url}" target="_blank" rel="noopener noreferrer">GET</a>
-      `;
-    }
-
-    container.appendChild(div);
-  });
-}
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderSection(news, 'news-section');
-      renderSection(apps, 'apps-section');
-      renderSection(certificates, 'certificates-section');
-      renderSection(dns, 'dns-section');
-      renderSection(otherApps, 'executor-section');
-      renderSection(websites, 'website-section');
-      renderSection(ipas, 'ipas-section');
-      renderSection(jailbreaks, 'jailbreak-section');
-      renderSection(apple, 'apple-section');
-
-
-      const tabButtons = document.querySelectorAll('.tab-button');
-      const tabContents = document.querySelectorAll('.tab-content');
-
-      tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const tabId = button.dataset.tab;
-
-          tabButtons.forEach(btn => btn.classList.remove('active'));
-          button.classList.add('active');
-
-          tabContents.forEach(content => {
-            content.classList.remove('active');
-            if (content.id === tabId) {
-              content.classList.add('active');
-            }
-          });
-        });
-      });
-    });
-  </script>
-
-<script>
- const styleBox = `
-  font-size: 14px;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(to right, violet, #FE03A2);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-family: monospace;
-`;
-
-console.log('%c╭──────────────────────────────────────────────╮\n| PurplesStrat\'s Sideloading Website            |\n| Website by PurplesStrat, pkplaysrblx and nxyq |\n╰──────────────────────────────────────────────╯', styleBox);
-            </script>
-
+<script type="module" src="main.js"></script>
 </body>
 </html>
