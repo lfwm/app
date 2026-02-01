@@ -7,78 +7,51 @@
 
 <style>
 :root {
-  --glass-bg: rgba(255,255,255,0.06);
-  --glass-strong: rgba(255,255,255,0.14);
-  --border: rgba(255,255,255,0.25);
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.18);
   --accent: #ff4dc4;
-  --text: #f5f5f5;
+  --text: #f1f1f1;
 }
 
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background:
-    radial-gradient(circle at top, #2a2a2a, #050505),
-    linear-gradient(180deg, #111, #000);
+  background: radial-gradient(circle at top, #1a1a1a, #000);
   color: var(--text);
-  overflow-x: hidden;
 }
 
+/* GLASS */
 .glass {
-  position: relative;
-  background:
-    linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
-    var(--glass-bg);
-  backdrop-filter: blur(35px) saturate(180%);
+  backdrop-filter: blur(20px);
+  background: var(--glass);
   border: 1px solid var(--border);
-  border-radius: 26px;
-  box-shadow:
-    0 12px 45px rgba(0,0,0,0.6),
-    inset 0 1px 1px rgba(255,255,255,0.3);
+  border-radius: 20px;
 }
 
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.4),
-    rgba(255,255,255,0.12) 25%,
-    transparent 60%
-  );
-  pointer-events: none;
-}
-
+/* HEADER */
 header {
   margin: 20px;
-  padding: 22px;
+  padding: 20px;
   text-align: center;
-  animation: fadeDown .8s ease;
 }
+header h1 { margin: 0; }
 
+/* TABS */
 .tabs {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  overflow-x: auto;
-  padding: 0 20px 14px;
+  margin: 20px;
 }
 
 .tab-button {
   padding: 10px 18px;
   border-radius: 999px;
-  background: var(--glass-bg);
   border: 1px solid var(--border);
+  background: var(--glass);
   color: var(--text);
-  backdrop-filter: blur(25px);
   cursor: pointer;
-  white-space: nowrap;
-  transition: all .3s ease;
-}
-
-.tab-button:hover {
-  transform: translateY(-2px);
 }
 
 .tab-button.active {
@@ -86,120 +59,56 @@ header {
   color: black;
 }
 
+/* CONTENT */
 main {
-  max-width: 900px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
-.tab-content {
-  display: none;
-  animation: tabFade .45s ease;
-}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-.tab-content.active {
-  display: block;
-}
-
+/* LABEL */
 .section-label {
-  margin-bottom: 14px;
-  padding: 16px;
-  border-radius: 18px;
+  padding: 14px;
+  border-radius: 16px;
   background: linear-gradient(135deg, #ff4dc4, #a855f7);
   color: black;
-  animation: fadeUp .5s ease;
 }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+/* GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 
-.list-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 22px;
-  background: var(--glass-strong);
-  backdrop-filter: blur(30px) saturate(180%);
+/* CARD */
+.card {
+  backdrop-filter: blur(25px);
+  background: var(--glass);
   border: 1px solid var(--border);
-  box-shadow:
-    0 10px 35px rgba(0,0,0,0.55),
-    inset 0 1px 1px rgba(255,255,255,0.25);
-  opacity: 0;
-  transform: translateY(14px);
-  animation: itemIn .45s ease forwards;
+  border-radius: 20px;
+  padding: 16px;
+  text-align: center;
 }
 
-.list-item:nth-child(n) {
-  animation-delay: calc(var(--i) * 60ms);
+.card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
 }
 
-.list-item:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 14px 45px rgba(0,0,0,0.75),
-    inset 0 1px 1px rgba(255,255,255,0.35);
-}
-
-.list-item:active {
-  transform: scale(0.97);
-}
-
-.list-item img {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-}
-
-.list-info {
-  flex: 1;
-}
-
-.list-info h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.list-info p {
-  margin: 4px 0 0;
-  font-size: .85rem;
-  opacity: .75;
-}
-
-.list-item a {
+.card a {
+  display: inline-block;
+  margin-top: 10px;
   padding: 6px 16px;
   border-radius: 999px;
   background: linear-gradient(135deg, #ff4dc4, #a855f7);
   color: black;
   text-decoration: none;
-  font-weight: 600;
-  transition: transform .2s ease;
-}
-
-.list-item a:hover {
-  transform: scale(1.05);
-}
-
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes tabFade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes itemIn {
-  to { opacity: 1; transform: translateY(0); }
+  font-weight: bold;
 }
 </style>
 </head>
@@ -207,7 +116,8 @@ main {
 <body>
 
 <header class="glass">
-  <h1>🟣 PurplesStrat iOS</h1>
+ <img src="https://purplesstrat.github.io/apple-1.png" alt=" Icon had gone missing :(" style="width:24px; height:24px; vertical-align:middle; margin-right:8px;">
+    PurplesStrat
 </header>
 
 <nav class="tabs">
@@ -223,18 +133,17 @@ main {
 </nav>
 
 <main>
-  <section id="apps" class="tab-content active"><div id="apps-section"></div></section>
-  <section id="news" class="tab-content"><div id="news-section"></div></section>
-  <section id="certificates" class="tab-content"><div id="certificates-section"></div></section>
-  <section id="dns" class="tab-content"><div id="dns-section"></div></section>
-  <section id="executors" class="tab-content"><div id="executors-section"></div></section>
-  <section id="websites" class="tab-content"><div id="websites-section"></div></section>
-  <section id="ipas" class="tab-content"><div id="ipas-section"></div></section>
-  <section id="jailbreaks" class="tab-content"><div id="jailbreaks-section"></div></section>
-  <section id="apple" class="tab-content"><div id="apple-section"></div></section>
+  <section id="apps" class="tab-content active"><div class="card-grid" id="apps-section"></div></section>
+  <section id="news" class="tab-content"><div class="card-grid" id="news-section"></div></section>
+  <section id="certificates" class="tab-content"><div class="card-grid" id="certificates-section"></div></section>
+  <section id="dns" class="tab-content"><div class="card-grid" id="dns-section"></div></section>
+  <section id="executors" class="tab-content"><div class="card-grid" id="executors-section"></div></section>
+  <section id="websites" class="tab-content"><div class="card-grid" id="websites-section"></div></section>
+  <section id="ipas" class="tab-content"><div class="card-grid" id="ipas-section"></div></section>
+  <section id="jailbreaks" class="tab-content"><div class="card-grid" id="jailbreaks-section"></div></section>
+  <section id="apple" class="tab-content"><div class="card-grid" id="apple-section"></div></section>
 </main>
 
 <script type="module" src="main.js"></script>
-
 </body>
 </html>
