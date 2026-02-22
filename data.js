@@ -147,6 +147,12 @@ export const DATA = {
         url: 'itms-services://?action=download-manifest&url=https://skibiditech.co/SkibX.plist',
         img: 'https://skibx.com/icon.png',
         descriptions: 'Custom SkibidiTech Executor',
+      },
+    {
+        name: 'Ronix',
+        url: 'itms-services://?action=download-manifest&url=https://ronixstudios.io/manifest.plist',
+        img: 'https://i.imgur.com/uTVrho3.png',
+        descriptions: 'Direct Install',
       }
 
   ],
